@@ -34,6 +34,7 @@ public class AuthService {
             user.getEmail(),
             ""
     ));
+    System.out.println("Code end");
 
     return new StringResponseDto("User registered successfully");
   }
