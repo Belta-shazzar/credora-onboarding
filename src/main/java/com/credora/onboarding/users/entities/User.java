@@ -26,8 +26,8 @@ public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  @Column(name = "user_id")
-  private UUID userId;
+  @Column()
+  private UUID id;
 
   @Column(nullable = false, length = 50, name = "first_name")
   private String firstName;
@@ -45,9 +45,13 @@ public class User {
   private String phoneNumber;
 
   @Enumerated(EnumType.STRING)
-  @Column(nullable = false, length = 20)
+  @Column(nullable = false)
   @Builder.Default
   private UserStatus accountStatus = UserStatus.PENDING;
+
+//  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//  @JoinColumn(name = "profile_id", referencedColumnName = "id", unique = true)
+//  private UserProfile profile;
 
   @CreationTimestamp
   @Column(nullable = false, updatable = false)

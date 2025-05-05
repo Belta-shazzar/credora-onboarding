@@ -27,7 +27,7 @@ public class AuthService {
 
     User user = this.userService.createUser(request);
 
-//      TODO: Publish an event for the notification service
+    //  TODO: Publish an event for the notification service
     producerService.sendOnboardingConfirmationNotification(new OnboardingNotificationRequest(
             user.getFirstName(),
             user.getLastName(),
