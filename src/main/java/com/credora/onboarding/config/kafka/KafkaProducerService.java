@@ -13,7 +13,6 @@ import java.util.concurrent.CompletableFuture;
 @Service
 @RequiredArgsConstructor
 public class KafkaProducerService {
-
   private final KafkaTemplate<String, OnboardingNotificationRequest> kafkaTemplate;
 
 //  public void sendOnboardingConfirmationNotification(OnboardingNotificationRequest request) {

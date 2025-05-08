@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface UserService {
   Optional<User> getUserByEmail(String email);
 
-  User createUser(RegisterDto user);
+  User  createUser(RegisterDto user);
 
   StringResponseDto getUserDetails(UUID userId);
 }
