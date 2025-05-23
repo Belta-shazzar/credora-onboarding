@@ -26,11 +26,11 @@ public class UserServiceImpl implements UserService {
   public User createUser(RegisterDto registerDto) {
     User user = User
             .builder()
-            .firstName(registerDto.firstName())
-            .lastName(registerDto.lastName())
-            .email(registerDto.email())
-            .password(registerDto.password())
-            .phoneNumber(registerDto.phoneNumber())
+            .firstName(registerDto.getFirstName())
+            .lastName(registerDto.getLastName())
+            .email(registerDto.getEmail())
+            .password(registerDto.getPassword())
+            .phoneNumber(registerDto.getPhoneNumber())
             .build();
 
     return userRepository.save(user);

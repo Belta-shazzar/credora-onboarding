@@ -4,17 +4,19 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
-public record RegisterDto(
+@Data
+public class RegisterDto {
         @NotBlank(message = "First name is required")
-        String firstName,
+        String firstName;
 
         @NotBlank(message = "Last name is required")
-        String lastName,
+        String lastName;
 
         @Email(message = "Email should be valid")
         @NotBlank(message = "Email is required")
-        String email,
+        String email;
 
         @NotBlank(message = "Password is required")
         @Size(min = 8, message = "Password must be at least 8 characters long")
@@ -22,9 +24,8 @@ public record RegisterDto(
                 regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
                 message = "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
         )
-        String password,
+        String password;
 
         @NotBlank(message = "Phone number is required")
-        String phoneNumber
-) {
+        String phoneNumber;
 }
