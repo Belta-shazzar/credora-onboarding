@@ -3,6 +3,7 @@ package com.credora.onboarding.exception;
 import com.credora.onboarding.exception.custom.BadRequestException;
 import com.credora.onboarding.exception.custom.ConflictException;
 import com.credora.onboarding.exception.custom.NotFoundException;
+import com.credora.onboarding.exception.custom.UnauthorizedException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +52,17 @@ public class GlobalExceptionHandler {
     );
 
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+  }
+
+  @ExceptionHandler(UnauthorizedException.class)
+  public ResponseEntity<ErrorMessage> unauthorizedException(UnauthorizedException ex) {
+    ErrorMessage message = new ErrorMessage(
+            HttpStatus.UNAUTHORIZED.value(),
+            HttpStatus.UNAUTHORIZED,
+            ex.getMessage()
+    );
+
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)

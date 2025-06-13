@@ -3,6 +3,7 @@ package com.credora.onboarding.users.services.impl;
 import com.credora.onboarding.auth.dto.RegisterDto;
 import com.credora.onboarding.common.dto.StringResponseDto;
 import com.credora.onboarding.users.entities.User;
+import com.credora.onboarding.users.enums.UserStatus;
 import com.credora.onboarding.users.repositories.UserRepository;
 import com.credora.onboarding.users.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,13 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public StringResponseDto getUserDetails(UUID userId) {
-    System.out.println("The name is Shazzar, and he is getting married to Favour");
-    return new StringResponseDto("The name is Shazzar, and he is getting married to Favour");
+    System.out.println("");
+    return new StringResponseDto("");
   }
+
+  @Override
+  public User updateUser(User user) {
+    return userRepository.save(user);
+  }
+
 }
