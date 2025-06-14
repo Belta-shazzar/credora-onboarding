@@ -1,12 +1,16 @@
 package com.credora.onboarding.auth;
 
-import com.credora.onboarding.auth.dto.OtpDto;
-import com.credora.onboarding.auth.dto.RegisterDto;
-import com.credora.onboarding.auth.dto.ResendOtpDto;
+import com.credora.onboarding.auth.dto.request.LoginResponseDto;
+import com.credora.onboarding.auth.dto.response.LoginDto;
+import com.credora.onboarding.auth.dto.response.OtpDto;
+import com.credora.onboarding.auth.dto.response.RegisterDto;
+import com.credora.onboarding.auth.dto.response.ResendOtpDto;
 import com.credora.onboarding.common.dto.StringResponseDto;
 import com.credora.onboarding.config.kafka.KafkaProducerService;
 import com.credora.onboarding.config.kafka.dto.OnboardingNotificationRequest;
 import com.credora.onboarding.config.redis.RedisService;
+import com.credora.onboarding.config.security.jwt.JwtUtil;
+import com.credora.onboarding.config.security.user.AppUser;
 import com.credora.onboarding.exception.custom.BadRequestException;
 import com.credora.onboarding.exception.custom.ConflictException;
 import com.credora.onboarding.exception.custom.NotFoundException;
@@ -18,7 +22,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +43,8 @@ public class AuthService {
   private final PasswordEncoder passwordEncoder;
   private final RedisService redisService;
   private final ObjectMapper objectMapper;
+  private final AuthenticationManager authenticationManager;
+  private final JwtUtil jwtUtil;
 
   public StringResponseDto registerUser(RegisterDto request) throws ConflictException {
     Optional<User> existingUser = userService.getUserByEmail(request.getEmail());
@@ -51,6 +63,32 @@ public class AuthService {
     ));
 
     return new StringResponseDto("User registered successfully");
+  }
+
+  public LoginResponseDto login(LoginDto loginDto) throws Exception {
+    try {
+    Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+            loginDto.email(),
+            loginDto.password()
+    ));
+
+    AppUser appUser = (AppUser) authentication.getPrincipal();
+
+    String accessToken = this.jwtUtil.generateAccessToken(appUser);
+    String refreshToken = this.jwtUtil.generateRefreshToken(appUser);
+
+    User user = appUser.getUser();
+
+    return new LoginResponseDto(
+            user.getFirstName(),
+            user.getLastName(),
+            user.getEmail(),
+            accessToken,
+            refreshToken
+    );
+    } catch (Exception e) {
+      throw new BadRequestException("Incorrect email or password");
+    }
   }
 
   public StringResponseDto verifyOtp(OtpDto otpDto) throws UnauthorizedException, JsonProcessingException, NotFoundException {
@@ -93,5 +131,25 @@ public class AuthService {
     ));
 
     return new StringResponseDto("OTP has been sent");
+  }
+
+  public void getAuthenticatedUser() {
+
+  }
+
+  public void getRefreshToken(HttpServletRequest request, HttpServletResponse response) {
+//    String refreshToken;
+//    String email;
+//    String authPrefix = "Bearer ";
+//    String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+//
+//    if (authHeader != null || !authHeader.startsWith(authPrefix)) {
+////      TODO: Figure if to return or throw an error.
+//    }
+//
+//    refreshToken = authHeader.substring(authPrefix.length());
+//    email = jwtUtil.getUserNameFromToken(refreshToken);
+//
+//    System.out.println("The auth header: " + email);
   }
 }

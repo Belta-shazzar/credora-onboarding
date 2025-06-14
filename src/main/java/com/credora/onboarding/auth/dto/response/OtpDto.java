@@ -1,4 +1,4 @@
-package com.credora.onboarding.auth.dto;
+package com.credora.onboarding.auth.dto.response;
 
 import jakarta.validation.constraints.*;
 

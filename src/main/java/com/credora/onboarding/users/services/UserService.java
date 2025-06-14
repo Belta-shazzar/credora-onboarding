@@ -1,6 +1,6 @@
 package com.credora.onboarding.users.services;
 
-import com.credora.onboarding.auth.dto.RegisterDto;
+import com.credora.onboarding.auth.dto.response.RegisterDto;
 import com.credora.onboarding.common.dto.StringResponseDto;
 import com.credora.onboarding.users.entities.User;
 

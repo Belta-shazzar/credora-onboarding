@@ -17,10 +17,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class  WebSecurityConfig {
+public class WebSecurityConfig {
   private final JwtRequestFilter jwtRequestFilter;
   private final AuthenticationProvider authenticationProvider;
-  private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**", "/v1/api-docs"};
+  private static final String[] WHITE_LIST_URL = {
+          "/api/v1/auth/register",
+          "/api/v1/auth/login",
+          "/api/v1/auth/verify-otp",
+          "/api/v1/auth/resend-otp",
+          "/api/v1/auth/refresh-token",
+          "/v1/api-docs"
+  };
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
