@@ -26,6 +26,7 @@ public class WebSecurityConfig {
           "/api/v1/auth/verify-otp",
           "/api/v1/auth/resend-otp",
           "/api/v1/auth/refresh-token",
+          "/api/v1/users/*",
           "/v1/api-docs"
   };
 

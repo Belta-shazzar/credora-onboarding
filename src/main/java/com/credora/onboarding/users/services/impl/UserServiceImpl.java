@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public StringResponseDto getUserDetails(UUID userId) {
     System.out.println("");
-    return new StringResponseDto("");
+    return new StringResponseDto("Hello, It's Shazzar from the Credora");
   }
 
   @Override
